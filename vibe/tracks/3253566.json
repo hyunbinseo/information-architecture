@@ -1,0 +1,99 @@
+{
+	"albumTitle": "Supersonic",
+	"releaseDate": "2012-07-03",
+	"trackTitle": "Set Me Free",
+	"discNumber": 1,
+	"trackNumber": 8,
+	"lyric": {
+		"response": {
+			"result": {
+				"lyric": {
+					"normalLyric": {
+						"text": "빛 바랜 낡은 기억\n멈춘 시계 속\n누구도 찾지 못한\n희미해진 나의 모습\n비틀거리는 꿈들\n조금씩 멀어진다\n닳도록 원해 내게\n무엇도 남지 않은 내게\nSet me free let me be\n숨을 쉴 수가 없어\nSet me free let me be\n이젠 지겨워졌어\nSet me free let me be\n너무 지쳐버렸어\nSet me free let me be\n더는 견딜 수 없어\nSet me free Set me free\n하나 바래 보는것\n차마 말 못하는것\n아마 묻어두겠지\n내겐 무거웠던 말\n빛 바랜 낡은 기억\n멈춘 시계 속\n닳도록 원해 내게\n무엇도 남지 않은 내게\nSet me free let me be\n숨을 쉴 수가 없어\nSet me free let me be\n이젠 지겨워졌어\nSet me free let me be\n너무 지쳐버렸어\nSet me free let me be\n더는 견딜 수 없어\nSet me free Set me free\nSet me free Set me free"
+					},
+					"syncLyric": {
+						"startTimeIndex": [
+							31.7,
+							38.6,
+							46.3,
+							53.6,
+							76.2,
+							83.4,
+							91.2,
+							98.2,
+							137.1,
+							140.9,
+							144.5,
+							148.3,
+							152.2,
+							155.9,
+							159.9,
+							163.3,
+							167.2,
+							183.4,
+							190.3,
+							198.1,
+							205.6,
+							212.9,
+							220,
+							227.8,
+							234.9,
+							272.3,
+							275.9,
+							279.7,
+							283.5,
+							287.5,
+							291.2,
+							294.6,
+							298.1,
+							302.2,
+							317.2
+						],
+						"endTimeIndex": [],
+						"contents": [
+							{
+								"text": [
+									"빛 바랜 낡은 기억",
+									"멈춘 시계 속",
+									"누구도 찾지 못한",
+									"희미해진 나의 모습",
+									"비틀거리는 꿈들",
+									"조금씩 멀어진다",
+									"닳도록 원해 내게",
+									"무엇도 남지 않은 내게",
+									"Set me free let me be",
+									"숨을 쉴 수가 없어",
+									"Set me free let me be",
+									"이젠 지겨워졌어",
+									"Set me free let me be",
+									"너무 지쳐버렸어",
+									"Set me free let me be",
+									"더는 견딜 수 없어",
+									"Set me free Set me free",
+									"하나 바래 보는것",
+									"차마 말 못하는것",
+									"아마 묻어두겠지",
+									"내겐 무거웠던 말",
+									"빛 바랜 낡은 기억",
+									"멈춘 시계 속",
+									"닳도록 원해 내게",
+									"무엇도 남지 않은 내게",
+									"Set me free let me be",
+									"숨을 쉴 수가 없어",
+									"Set me free let me be",
+									"이젠 지겨워졌어",
+									"Set me free let me be",
+									"너무 지쳐버렸어",
+									"Set me free let me be",
+									"더는 견딜 수 없어",
+									"Set me free Set me free",
+									"Set me free Set me free"
+								]
+							}
+						]
+					}
+				}
+			}
+		}
+	}
+}

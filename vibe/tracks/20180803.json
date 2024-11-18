@@ -1,0 +1,114 @@
+{
+	"albumTitle": "RescuE",
+	"releaseDate": "2017-12-27",
+	"trackTitle": "가",
+	"discNumber": 1,
+	"trackNumber": 9,
+	"lyric": {
+		"response": {
+			"result": {
+				"lyric": {
+					"normalLyric": {
+						"text": "미안하다는 사과도\n잘하겠다는 네 말도\n지겨워 다\nOver and over again\n포개진 빈 틈 사이로\n어긋나버린 오해가 점점\nI can't take it anymore baby\nCall\n모든 걸 되돌리긴\nCall\n의미 없어 그냥\n가\n이미 끝났어 우린\n가\nI don't know what you do\n시리게 아름답던 그 추억들\n뒤로 한 채\n어디서부터 뒤틀려 버린 건지\n숨쉬는 공기마저 다 어색한지 오래\nI can't take it anymore baby\nCall\n모든 걸 되돌리긴\nCall\n의미 없어 그냥\n가\n이미 끝났어 우린\n가\nI don't know what you do"
+					},
+					"syncLyric": {
+						"startTimeIndex": [
+							23.8,
+							26.6,
+							30.8,
+							33,
+							35.2,
+							37.9,
+							42.6,
+							46.4,
+							49.3,
+							52.1,
+							55,
+							57.7,
+							60.7,
+							63.4,
+							66.4,
+							71.1,
+							75.9,
+							79.5,
+							82.4,
+							88.2,
+							91.6,
+							94.5,
+							97.2,
+							100.2,
+							102.9,
+							105.9,
+							108.5,
+							111.5
+						],
+						"endTimeIndex": [
+							25.7,
+							25.9,
+							31.8,
+							34.6,
+							37.5,
+							41.5,
+							46,
+							49,
+							51.2,
+							54.7,
+							56.4,
+							60.3,
+							62.6,
+							65.5,
+							69.7,
+							73.8,
+							79.1,
+							82.2,
+							85.5,
+							91.1,
+							94,
+							96.4,
+							99.9,
+							101.6,
+							105,
+							107.8,
+							110.4,
+							114.7
+						],
+						"contents": [
+							{
+								"text": [
+									"미안하다는 사과도",
+									"잘하겠다는 네 말도",
+									"지겨워 다",
+									"Over and over again",
+									"포개진 빈 틈 사이로",
+									"어긋나버린 오해가 점점",
+									"I can't take it anymore baby",
+									"Call",
+									"모든 걸 되돌리긴",
+									"Call",
+									"의미 없어 그냥",
+									"가",
+									"이미 끝났어 우린",
+									"가",
+									"I don't know what you do",
+									"시리게 아름답던 그 추억들",
+									"뒤로 한 채",
+									"어디서부터 뒤틀려 버린 건지",
+									"숨쉬는 공기마저 다 어색한지 오래",
+									"I can't take it anymore baby",
+									"Call",
+									"모든 걸 되돌리긴",
+									"Call",
+									"의미 없어 그냥",
+									"가",
+									"이미 끝났어 우린",
+									"가",
+									"I don't know what you do"
+								]
+							}
+						]
+					}
+				}
+			}
+		}
+	}
+}
