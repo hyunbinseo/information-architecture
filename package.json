@@ -1,6 +1,11 @@
 {
 	"type": "module",
+	"scripts": {
+		"chroma": "chroma run --path ./chroma"
+	},
 	"dependencies": {
+		"chromadb": "^1.9.2",
+		"openai": "^4.72.0",
 		"valibot": "1.0.0-beta.7"
 	},
 	"devDependencies": {
