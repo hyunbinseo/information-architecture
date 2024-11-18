@@ -1,34 +1,40 @@
 import { writeFileSync } from 'node:fs';
-import { array, number, object, optional, parse, safeParse, string } from 'valibot';
+import { array, number, object, optional, parse, pipe, safeParse, string, transform } from 'valibot';
 import albums from './albums.json' with { type: 'json' };
 
-const AlbumSchema = object({
-	"response": object({
-		"result": object({
-			tracks: array(object({
-				trackId: number(),
-				trackTitle: string(),
-				discNumber: number(),
-				trackNumber: number(),
-			}))
-		})
-	})
-})
-
-const LyricSchema = object({
-	"response": object({
-		"result": object({
-			lyric: object({
-				normalLyric: optional(object({ text: string() })),
-				syncLyric: optional(object({
-					startTimeIndex: array(number()),
-					endTimeIndex: array(number()),
-					contents: array(object({ text: array(string()) })),
-				})),
+const TracksSchema = pipe(
+	object({
+		"response": object({
+			"result": object({
+				tracks: array(object({
+					trackId: number(),
+					trackTitle: string(),
+					discNumber: number(),
+					trackNumber: number(),
+				}))
 			})
 		})
-	})
-})
+	}),
+	transform((v) => v.response.result.tracks)
+)
+
+export const LyricSchema = pipe(
+	object({
+		"response": object({
+			"result": object({
+				lyric: object({
+					normalLyric: optional(object({ text: string() })),
+					syncLyric: optional(object({
+						startTimeIndex: array(number()),
+						endTimeIndex: array(number()),
+						contents: array(object({ text: array(string()) })),
+					})),
+				})
+			})
+		})
+	}),
+	transform((v) => v.response.result.lyric)
+)
 
 for await (const { albumId, albumTitle, releaseDate } of albums) {
 	const response = await fetch(`https://apis.naver.com/vibeWeb/musicapiweb/album/${albumId}/tracks?start=1&display=1000`, {
@@ -40,9 +46,9 @@ for await (const { albumId, albumTitle, releaseDate } of albums) {
 		continue
 	};
 
-	const album = parse(AlbumSchema, await response.json())
+	const tracks = parse(TracksSchema, await response.json())
 
-	for await (const { trackId, trackTitle, discNumber, trackNumber } of album.response.result.tracks) {
+	for await (const { trackId, trackTitle, discNumber, trackNumber } of tracks) {
 		const response = await fetch(`https://apis.naver.com/vibeWeb/musicapiweb/vibe/v4/lyric/${trackId}`, {
 			headers: { 'Accept': 'application/json' }
 		})
