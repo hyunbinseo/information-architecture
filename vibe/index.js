@@ -1,6 +1,7 @@
 import { writeFileSync } from 'node:fs';
-import { array, number, object, optional, parse, pipe, safeParse, string, transform } from 'valibot';
-import albums from './albums.json' with { type: 'json' };
+import * as prettier from "prettier";
+import { array, length, number, object, parse, pipe, safeParse, string, transform } from 'valibot';
+import younhaAlbums from './younha.json' with { type: 'json' };
 
 const TracksSchema = pipe(
 	object({
@@ -22,41 +23,49 @@ export const LyricSchema = pipe(
 	object({
 		"response": object({
 			"result": object({
-				lyric: object({
-					normalLyric: optional(object({ text: string() })),
-					syncLyric: optional(object({
-						startTimeIndex: array(number()),
-						endTimeIndex: array(number()),
-						contents: array(object({ text: array(string()) })),
-					})),
-				})
+				lyric: pipe(
+					object({
+						syncLyric: pipe(
+							object({
+								startTimeIndex: array(number()),
+								endTimeIndex: array(number()),
+								contents: pipe(
+									array(object({ text: array(string()) })),
+									length(1),
+
+								),
+							}),
+							transform(({ startTimeIndex, endTimeIndex, contents }) => ({
+								timeIndex: startTimeIndex.map((startTime, i) => [startTime, endTimeIndex[i]]),
+								text: contents[0].text.join('\n')
+							}))
+						)
+					}),
+					transform(({ syncLyric }) => (syncLyric))
+				)
 			})
 		})
 	}),
 	transform((v) => v.response.result.lyric)
 )
 
-for await (const { albumId, albumTitle, releaseDate } of albums) {
+for await (const { albumId, albumTitle, releaseDate } of younhaAlbums) {
 	const response = await fetch(`https://apis.naver.com/vibeWeb/musicapiweb/album/${albumId}/tracks?start=1&display=1000`, {
 		headers: { 'Accept': 'application/json' }
 	});
 
-	if (!response.ok) {
-		console.error(`Failed to fetch album ${albumId}`);
-		continue
-	};
+	if (!response.ok) continue;
 
 	const tracks = parse(TracksSchema, await response.json())
 
 	for await (const { trackId, trackTitle, discNumber, trackNumber } of tracks) {
+		if (trackTitle.toLowerCase().includes('inst')) continue;
+
 		const response = await fetch(`https://apis.naver.com/vibeWeb/musicapiweb/vibe/v4/lyric/${trackId}`, {
 			headers: { 'Accept': 'application/json' }
 		})
 
-		if (!response.ok) {
-			console.error(`Failed to fetch lyric for track ${trackId}`);
-			continue
-		}
+		if (!response.ok) continue;
 
 		const parsedLyric = safeParse(LyricSchema, await response.json())
 		if (!parsedLyric.success) {
@@ -67,15 +76,16 @@ for await (const { albumId, albumTitle, releaseDate } of albums) {
 			continue
 		}
 
-		writeFileSync(`${import.meta.dirname}/tracks/${trackId}.json`, JSON.stringify({
-			albumTitle,
-			releaseDate,
-			trackTitle,
-			discNumber,
-			trackNumber,
-			lyric: parsedLyric.output
-			,
-		}, null, '\t'))
+		writeFileSync(`${import.meta.dirname}/tracks/${trackId}.json`, await prettier.format(
+			JSON.stringify({
+				albumTitle,
+				releaseDate,
+				trackTitle,
+				discNumber,
+				trackNumber,
+				lyric: parsedLyric.output
+			}),
+			{ parser: 'json', useTabs: true }
+		))
 	}
 }
-
