@@ -1,9 +1,11 @@
 {
+	"artistId": 15649,
 	"albumTitle": "RescuE",
 	"releaseDate": "2017-12-27",
 	"trackTitle": "Airplane mode",
 	"discNumber": 1,
 	"trackNumber": 5,
+	"trackId": 20180804,
 	"lyric": {
 		"timeIndex": [
 			[25.7, 27.7],

@@ -1,9 +1,11 @@
 {
+	"artistId": 15649,
 	"albumTitle": "Supersonic",
 	"releaseDate": "2012-07-03",
 	"trackTitle": "Set Me Free",
 	"discNumber": 1,
 	"trackNumber": 8,
+	"trackId": 3253566,
 	"lyric": {
 		"timeIndex": [
 			[31.7, null],

@@ -1,9 +1,11 @@
 {
+	"artistId": 15649,
 	"albumTitle": "RescuE",
 	"releaseDate": "2017-12-27",
 	"trackTitle": "답을 찾지 못한 날",
 	"discNumber": 1,
 	"trackNumber": 10,
+	"trackId": 20180811,
 	"lyric": {
 		"timeIndex": [
 			[14.7, 18.2],

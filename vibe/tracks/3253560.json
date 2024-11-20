@@ -1,9 +1,11 @@
 {
+	"artistId": 15649,
 	"albumTitle": "Supersonic",
 	"releaseDate": "2012-07-03",
 	"trackTitle": "Supersonic",
 	"discNumber": 1,
 	"trackNumber": 1,
+	"trackId": 3253560,
 	"lyric": {
 		"timeIndex": [
 			[24.8, 35.8],

@@ -1,9 +1,11 @@
 {
+	"artistId": 15649,
 	"albumTitle": "SOMEDAY",
 	"releaseDate": "2008-08-28",
 	"trackTitle": "Hero",
 	"discNumber": 1,
 	"trackNumber": 3,
+	"trackId": 1903116,
 	"lyric": {
 		"timeIndex": [
 			[7.1, 9.7],

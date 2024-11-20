@@ -1,9 +1,11 @@
 {
+	"artistId": 15649,
 	"albumTitle": "RescuE",
 	"releaseDate": "2017-12-27",
 	"trackTitle": "예지몽",
 	"discNumber": 1,
 	"trackNumber": 6,
+	"trackId": 20180809,
 	"lyric": {
 		"timeIndex": [
 			[24.8, 28.4],

@@ -1,9 +1,11 @@
 {
+	"artistId": 15649,
 	"albumTitle": "RescuE",
 	"releaseDate": "2017-12-27",
 	"trackTitle": "Parade",
 	"discNumber": 1,
 	"trackNumber": 3,
+	"trackId": 20180801,
 	"lyric": {
 		"timeIndex": [
 			[20.98, null],
