@@ -1,5 +1,6 @@
 import { InferOutput } from 'valibot';
-import { artists, type LyricSchema } from './index';
+import { artists } from './crawl.js';
+import type { LyricSchema } from './schemas.js';
 
 export type Track = {
 	artistId: keyof typeof artists;

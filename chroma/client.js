@@ -1,10 +1,21 @@
 import { ChromaClient, OpenAIEmbeddingFunction } from 'chromadb';
-import { env, loadEnvFile } from 'node:process';
+import { loadEnvFile } from 'node:process';
+import { object, parse, string } from 'valibot';
 
-loadEnvFile('.env');
+loadEnvFile();
 
-if (!env.OPEN_AI_API_KEY) throw new Error('OPEN_AI_API_KEY is required');
+const env = parse(
+	object({ OPEN_AI_API_KEY: string() }), //
+	process.env,
+);
 
-export const client = new ChromaClient();
-export const embeddingFunction = new OpenAIEmbeddingFunction({ openai_api_key: env.OPEN_AI_API_KEY });
-export const collection = await client.getOrCreateCollection({ name: 'younha', embeddingFunction });
+export const chromaClient = new ChromaClient();
+
+export const embeddingFunction = new OpenAIEmbeddingFunction({
+	openai_api_key: env.OPEN_AI_API_KEY,
+});
+
+export const collection = await chromaClient.getOrCreateCollection({
+	name: 'songs',
+	embeddingFunction,
+});
