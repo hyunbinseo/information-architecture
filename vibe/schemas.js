@@ -50,11 +50,14 @@ export const LyricSchema = pipe(
 						syncLyric: pipe(
 							object({
 								startTimeIndex: array(number()),
-								endTimeIndex: array(number()),
+								endTimeIndex: array(number()), // can be an empty array
 								contents: pipe(array(object({ text: array(string()) })), length(1)),
 							}),
 							transform(({ startTimeIndex, endTimeIndex, contents }) => ({
-								timeIndex: startTimeIndex.map((startTime, i) => [startTime, endTimeIndex[i]]),
+								timeIndex: startTimeIndex.map(
+									/** @returns {[number, number | null]} */
+									(startTime, i) => [startTime, endTimeIndex.at(i) || null],
+								),
 								text: contents[0]?.text.join('\n') || null,
 							})),
 						),
