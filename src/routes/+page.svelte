@@ -25,12 +25,5 @@
 
 {#if form?.rewrittenLyric}
 	<hr class="my-10" />
-	<a
-		href="https://vibe.naver.com/track/{form.rewrittenLyric.split('\n')[0]}"
-		target="_blank"
-		class="text-blue-700"
-	>
-		곡 들으러 가기
-	</a>
-	<pre>{form.rewrittenLyric}</pre>
+	<pre>{JSON.stringify(form.rewrittenLyric, null, '  ')}</pre>
 {/if}

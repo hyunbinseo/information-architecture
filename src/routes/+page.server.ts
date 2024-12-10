@@ -2,7 +2,21 @@ import { OPEN_AI_API_KEY } from '$env/static/private';
 import { collection, embeddingFunction } from '$lib/index.server';
 import { error, fail } from '@sveltejs/kit';
 import OpenAI from 'openai';
-import { minLength, parse, pipe, safeParse, string, transform, trim } from 'valibot';
+import {
+	array,
+	digits,
+	integer,
+	minLength,
+	number,
+	object,
+	parse,
+	pipe,
+	safeParse,
+	string,
+	transform,
+	trim,
+	tuple
+} from 'valibot';
 import prompt from './prompt.txt?raw';
 
 const openAi = new OpenAI({ apiKey: OPEN_AI_API_KEY });
@@ -82,27 +96,37 @@ ${
 
 AI: 반갑습니다! 저는 개사가입니다. 어떤 내용으로 개사를 하면 될까요?
 
-인간: 다음 내용을 요약해서 그 주제와 정서가 담기도록 개사해줘. 개사하지 못하면 [불가]라고 네 글자로 답해.
+인간: 다음 내용을 요약해서 그 주제와 정서가 담기도록 개사해줘
 
 ---
 ${input}
 ---
 
-AI:`
+AI: {
+	"id": "`
 				}
 			]
 		});
 
-		const rewrittenLyric = parse(
-			pipe(
-				string(),
-				transform((input) => (input === '[불가]' ? null : input))
-			),
-			response1.choices[0]?.message.content
-		);
+		const rewritten = await (async () => {
+			const { content } = response1.choices[0]?.message;
+			if (!content) return null;
+			return parse(
+				object({
+					id: pipe(string(), digits()),
+					range: tuple([
+						pipe(number(), integer()), //
+						pipe(number(), integer())
+					]),
+					original: array(string()),
+					new: array(string())
+				}),
+				JSON.parse(content)
+			);
+		})().catch(() => null);
 
-		if (!rewrittenLyric) return fail(400, { error: '개사에 실패했습니다.' });
+		if (!rewritten) return fail(400, { error: '개사에 실패했습니다.' });
 
-		return { rewrittenLyric };
+		return { rewrittenLyric: rewritten };
 	}
 };
