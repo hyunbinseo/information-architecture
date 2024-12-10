@@ -13,6 +13,6 @@ for await (const path of globSync('./vibe/tracks/*.json')) {
 	await collection.add({
 		ids: [id],
 		metadatas: [track],
-		documents: [lyric.text],
+		documents: [lyric.text]
 	});
 }

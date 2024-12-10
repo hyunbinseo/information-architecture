@@ -6,16 +6,16 @@ loadEnvFile();
 
 const env = parse(
 	object({ OPEN_AI_API_KEY: string() }), //
-	process.env,
+	process.env
 );
 
 export const chromaClient = new ChromaClient();
 
 export const embeddingFunction = new OpenAIEmbeddingFunction({
-	openai_api_key: env.OPEN_AI_API_KEY,
+	openai_api_key: env.OPEN_AI_API_KEY
 });
 
 export const collection = await chromaClient.getOrCreateCollection({
 	name: 'songs',
-	embeddingFunction,
+	embeddingFunction
 });

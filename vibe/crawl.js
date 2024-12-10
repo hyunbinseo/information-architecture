@@ -6,7 +6,7 @@ import { AlbumsSchema, LyricSchema, TracksSchema } from './schemas.js';
 export const artists = /** @type {const} */ ({
 	15649: '윤하',
 	112579: '아이유(IU)',
-	243100: 'AKMU(악뮤)',
+	243100: 'AKMU(악뮤)'
 });
 
 /** @type {Array<keyof typeof artists>} */
@@ -19,7 +19,7 @@ for await (const artistId of new Set(artistIds)) {
 	for await (const type of ['REGULAR', 'SINGLE_AND_EP']) {
 		const response = await fetch(
 			`https://apis.naver.com/vibeWeb/musicapiweb/v3/musician/artist/${artistId}/albums?start=1&display=1000&type=${type}&sort=newRelease`,
-			{ headers: { Accept: 'application/json' } },
+			{ headers: { Accept: 'application/json' } }
 		);
 
 		if (!response.ok) continue;
@@ -30,13 +30,13 @@ for await (const artistId of new Set(artistIds)) {
 
 	writeFileSync(
 		`${import.meta.dirname}/artists/${artistId}.json`,
-		JSON.stringify(allAlbums, null, '\t'),
+		JSON.stringify(allAlbums, null, '\t')
 	);
 
 	for await (const { albumId, albumTitle, releaseDate } of allAlbums) {
 		const response = await fetch(
 			`https://apis.naver.com/vibeWeb/musicapiweb/album/${albumId}/tracks?start=1&display=1000`,
-			{ headers: { Accept: 'application/json' } },
+			{ headers: { Accept: 'application/json' } }
 		);
 
 		if (!response.ok) continue;
@@ -48,7 +48,7 @@ for await (const artistId of new Set(artistIds)) {
 
 			const response = await fetch(
 				`https://apis.naver.com/vibeWeb/musicapiweb/vibe/v4/lyric/${trackId}`,
-				{ headers: { Accept: 'application/json' } },
+				{ headers: { Accept: 'application/json' } }
 			);
 
 			if (!response.ok) continue;
@@ -71,15 +71,15 @@ for await (const artistId of new Set(artistIds)) {
 				discNumber,
 				trackNumber,
 				trackId,
-				lyric: parsedLyric.output,
+				lyric: parsedLyric.output
 			};
 
 			writeFileSync(
 				`${import.meta.dirname}/tracks/${trackId}.json`,
 				await prettier.format(JSON.stringify(track), {
 					parser: 'json',
-					useTabs: true,
-				}),
+					useTabs: true
+				})
 			);
 		}
 	}

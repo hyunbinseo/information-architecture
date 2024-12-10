@@ -8,7 +8,7 @@ loadEnvFile();
 
 const env = parse(
 	object({ OPEN_AI_API_KEY: string() }), //
-	process.env,
+	process.env
 );
 
 const openAi = new OpenAI({ apiKey: env.OPEN_AI_API_KEY });
@@ -26,10 +26,10 @@ const response0 = await openAi.chat.completions.create({
 	messages: [
 		{
 			role: 'system',
-			content: '다음 내용을 최대한 간결하게 요약해줘',
+			content: '다음 내용을 최대한 간결하게 요약해줘'
 		},
-		{ role: 'user', content: userInput },
-	],
+		{ role: 'user', content: userInput }
+	]
 });
 
 const condensedUserInput = response0.choices[0]?.message.content;
@@ -37,7 +37,7 @@ if (!condensedUserInput) throw new Error();
 
 const tracks = await collection.query({
 	queryEmbeddings: await embeddingFunction.generate([condensedUserInput]),
-	nResults: 10,
+	nResults: 10
 });
 
 const ids = tracks.ids[0];
@@ -59,9 +59,9 @@ ${
 				.split('\n')
 				.map((line, index) => `${index + 1}. ${line}`)
 				.join('\n')
-}`,
+}`
 		)
-		.join('\n\n'),
+		.join('\n\n')
 );
 
 const response1 = await openAi.chat.completions.create({
@@ -69,7 +69,7 @@ const response1 = await openAi.chat.completions.create({
 	messages: [
 		{
 			role: 'system',
-			content: systemPrompt,
+			content: systemPrompt
 		},
 		{
 			role: 'user',
@@ -83,9 +83,9 @@ AI: 반갑습니다! 저는 개사가입니다. 어떤 내용으로 개사를 �
 ${userInput}
 ---
 
-AI:`,
-		},
-	],
+AI:`
+		}
+	]
 });
 
 const rewrittenLyrics = response1.choices[0]?.message.content;
