@@ -1,36 +1,82 @@
 import { OPEN_AI_API_KEY } from '$env/static/private';
 import { collection, embeddingFunction } from '$lib/index.server';
+import { formDataToObject } from '@hyunbinseo/tools';
 import { error, fail } from '@sveltejs/kit';
+import * as cheerio from 'cheerio';
 import OpenAI from 'openai';
 import {
 	array,
 	digits,
 	integer,
 	minLength,
+	nullable,
 	number,
 	object,
 	parse,
 	pipe,
 	safeParse,
+	startsWith,
 	string,
 	transform,
 	trim,
-	tuple
+	tuple,
+	url
 } from 'valibot';
 import prompt from './prompt.txt?raw';
+
+export const load = async () => {
+	const response = await fetch('https://news.daum.net/');
+	if (!response.ok) return { newsLinks: null };
+
+	const $ = cheerio.load(await response.text());
+	const anchorElements = $('ul.list_newsheadline2 > li > a');
+
+	const links = new Array<Record<'title' | 'href' | 'img', string>>();
+
+	for (const a of anchorElements) {
+		const href = $(a).attr('href');
+		const title = $(a).find('.tit_txt').text();
+		const img = $(a).find('.img_g').attr('src');
+		if (title && href && img) links.push({ title, href, img });
+	}
+
+	return {
+		date: new Date(),
+		newsLinks: links.length ? links : null
+	};
+};
 
 const openAi = new OpenAI({ apiKey: OPEN_AI_API_KEY });
 
 export const actions = {
 	default: async ({ request }) => {
-		const response = await request.formData();
+		const formData = await request.formData();
 
-		const parsedInput = safeParse(
-			pipe(string(), trim(), minLength(1)), //
-			response.get('input')
+		const form = parse(
+			object({
+				news: nullable(pipe(string(), url(), startsWith('https://v.daum.net/v/'))),
+				input: nullable(pipe(string(), trim(), minLength(1)))
+			}),
+			formDataToObject(formData, { get: ['news', 'input'] })
 		);
 
-		if (!parsedInput.success) return fail(400, { error: '입력값이 잘못되었습니다.' });
+		const rawInput = await (async () => {
+			if (form.input) return form.input;
+			if (!form.news) return null;
+
+			const response = await fetch(form.news);
+			if (!response.ok) return null;
+
+			const $ = cheerio.load(await response.text());
+			const paragraphElements = $('p[dmcf-ptype="general"]');
+
+			let text = '';
+			for (const p of paragraphElements) text += $(p).text();
+
+			return text;
+		})();
+
+		if (!rawInput) return fail(400, { error: '입력값이 잘못되었습니다.' });
 
 		const response0 = await openAi.chat.completions.create({
 			model: 'gpt-4o-mini-2024-07-18',
@@ -39,7 +85,7 @@ export const actions = {
 					role: 'system',
 					content: '다음 내용을 최대한 간결하게 요약해줘. 요약하지 못하면 [불가]라고 네 글자로 답해'
 				},
-				{ role: 'user', content: parsedInput.output }
+				{ role: 'user', content: rawInput }
 			]
 		});
 
@@ -51,7 +97,7 @@ export const actions = {
 			response0.choices[0]?.message.content
 		);
 
-		const input = condensedInput || parsedInput.output;
+		const input = condensedInput || rawInput;
 
 		const tracks = await collection.query({
 			queryEmbeddings: await embeddingFunction.generate([input]),
@@ -108,10 +154,11 @@ AI: {
 			]
 		});
 
-		const rewritten = await (async () => {
+		const rewrittenLyric = (() => {
 			const { content } = response1.choices[0]?.message;
 			if (!content) return null;
-			return parse(
+
+			const parsed = safeParse(
 				object({
 					id: pipe(string(), digits()),
 					range: tuple([
@@ -123,10 +170,13 @@ AI: {
 				}),
 				JSON.parse(content)
 			);
-		})().catch(() => null);
 
-		if (!rewritten) return fail(400, { error: '개사에 실패했습니다.' });
+			if (!parsed.success) return null;
+			return parsed.output;
+		})();
 
-		return { rewrittenLyric: rewritten };
+		if (!rewrittenLyric) return fail(400, { error: '개사에 실패했습니다.' });
+
+		return { rewrittenLyric };
 	}
 };
