@@ -15,6 +15,18 @@
 	const f = createFormHelper({ updateOptions: { reset: false } });
 </script>
 
+<svelte:window
+	onbeforeunload={(e) => {
+		form = null;
+		e.preventDefault();
+	}}
+/>
+
+<svelte:head>
+	<title>개사봇</title>
+	<meta name="robots" content="noindex, nofollow" />
+</svelte:head>
+
 <form
 	use:enhance={f.submitFunction}
 	method="post"
@@ -57,7 +69,7 @@
 				<button type="button" onclick={() => invalidateAll()} class="w-fit">목록 갱신</button>
 			</div>
 			<ul class="space-y-5">
-				{#each data.newsLinks as { title, href, img }, index (href)}
+				{#each data.newsLinks as { title, href, img }, index}
 					<li>
 						<label>
 							<input type="radio" name="news" value={href} checked={!index} required />
@@ -88,6 +100,18 @@
 		</div>
 	{:else}
 		<h1 class="text-2xl font-bold">이렇게 개사해봤어요:</h1>
+		<!-- svelte-ignore a11y_missing_attribute -->
+		<img src={form.song.albumImageUrl} />
+		<p>
+			<a
+				href="https://vibe.naver.com/track/{form.song.trackId}"
+				target="_blank"
+				class="text-blue-600"
+			>
+				{form.song.artist} - {form.song.trackTitle}
+			</a>
+			중에서 발췌
+		</p>
 		<ol start={form.rewrittenLyric.range[0]} class="space-y-5 text-lg">
 			{#each form.rewrittenLyric.new as line, index}
 				<li>
@@ -97,13 +121,15 @@
 				</li>
 			{/each}
 		</ol>
-		<button
-			type="button"
-			onclick={() => (form = null)}
-			class="w-full rounded bg-blue-600 p-2 text-center text-white"
-		>
-			다시 해보기
-		</button>
+		<div class="sticky bottom-0 bg-white pb-5">
+			<button
+				type="button"
+				onclick={() => (form = null)}
+				class="w-full rounded bg-blue-600 p-2 text-center text-white"
+			>
+				다시 해보기
+			</button>
+		</div>
 	{/if}
 </form>
 

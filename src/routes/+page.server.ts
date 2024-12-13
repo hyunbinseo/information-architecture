@@ -22,6 +22,7 @@ import {
 	tuple,
 	url
 } from 'valibot';
+import songs from './crawled.json';
 import prompt from './prompt.txt?raw';
 
 export const load = async () => {
@@ -106,9 +107,8 @@ export const actions = {
 
 		const ids = tracks.ids[0];
 		const documents = tracks.documents[0];
-		const metadatas = tracks.metadatas[0];
 
-		if (!ids || !documents || !metadatas) error(500);
+		if (!ids || !documents) error(500);
 
 		const systemPrompt = prompt.replace(
 			'--곡 정보--',
@@ -158,25 +158,31 @@ AI: {
 			const { content } = response1.choices[0]?.message;
 			if (!content) return null;
 
-			const parsed = safeParse(
-				object({
-					id: pipe(string(), digits()),
-					range: tuple([
-						pipe(number(), integer()), //
-						pipe(number(), integer())
-					]),
-					original: array(string()),
-					new: array(string())
-				}),
-				JSON.parse(content)
-			);
-
-			if (!parsed.success) return null;
-			return parsed.output;
+			try {
+				const parsed = safeParse(
+					object({
+						id: pipe(string(), digits()),
+						range: tuple([
+							pipe(number(), integer()), //
+							pipe(number(), integer())
+						]),
+						original: array(string()),
+						new: array(string())
+					}),
+					JSON.parse(content)
+				);
+				if (!parsed.success) return null;
+				return parsed.output;
+			} catch {
+				return null;
+			}
 		})();
 
 		if (!rewrittenLyric) return fail(400, { error: '개사에 실패했습니다.' });
 
-		return { rewrittenLyric };
+		const song = songs[rewrittenLyric.id as keyof typeof songs];
+		if (!song) return fail(400, { error: '개사에 실패했습니다.' });
+
+		return { song, rewrittenLyric };
 	}
 };

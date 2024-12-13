@@ -1,0 +1,23 @@
+{
+	"artistId": 243100,
+	"albumTitle": "AKMU [항해] TOUR LIVE",
+	"releaseDate": "2020-07-03",
+	"trackTitle": "사랑상실증",
+	"discNumber": 1,
+	"trackNumber": 5,
+	"trackId": 40669038,
+	"lyric": {
+		"timeIndex": [
+			[0.4, 7.2],
+			[8.1, 15],
+			[17.1, 22.8],
+			[23.7, 23],
+			[31.6, 38.4],
+			[39.1, 44.2],
+			[47.1, 54.2],
+			[54.7, 54.1],
+			[62.5, 69.3]
+		],
+		"text": "I love you baby I love you\n꼭 기억해요 우리 사랑했던 순간을\n다음 날이 되면 또 애써야하지만\n그럼 또 처음부터 사랑해요\nI love you baby I love you\n꼭 기억해요 나를 사랑했던 순간을\n다음 날이 되면 또 애써야하지만\n하루 하루 다시 사랑해요\n하루 하루 다시"
+	}
+}
